@@ -1,0 +1,31 @@
+---
+- hosts: localhost
+  connection: local
+  vars:
+    provider:
+      server: bigip-a.example.com
+      user: admin
+      password: admin
+      validate_certs: no
+  tasks:
+    - name: Import BookInfo certificate
+      bigip_ssl_certificate:
+        name: bookinfo-example-com
+        state: present
+        content: "{{ lookup('file', 'certs/bookinfo.example.com.pem') }}"
+        provider: "{{ provider }}"
+    - name: Import BookInfo key
+      bigip_ssl_key:
+        name: bookinfo-example-com
+        state: present
+        content: "{{ lookup('file', 'certs/bookinfo.example.com-key.pem') }}"
+        provider: "{{ provider }}"
+    - name: Create BookInfo SSL Profile
+      bigip_profile_client_ssl:
+        name: bookinfo-example-com
+        state: present
+        cert_key_chain:
+          - cert: bookinfo-example-com
+            key: bookinfo-example-com
+        provider: "{{ provider }}"
+        

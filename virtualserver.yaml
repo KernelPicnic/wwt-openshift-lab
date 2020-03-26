@@ -1,0 +1,52 @@
+kind: ConfigMap
+apiVersion: v1
+metadata:
+  name: productpage.vs.https
+  labels:
+    f5type: virtual-server
+    as3: "true"
+data:
+  template: |
+    {
+        "class": "AS3",
+        "declaration": {
+            "class": "ADC",
+            "schemaVersion": "3.10.0",
+            "id": "labtest",
+            "label": "http",
+            "remark": "productpage",
+            "AS3": {
+                "class": "Tenant",
+                "productpage": {
+                    "class": "Application",
+                    "template": "https",
+                    "serviceMain": {
+                        "class": "Service_HTTPS",
+                        "virtualAddresses": [
+                            "192.168.2.181"
+                        ],
+                        "pool": "productpage_pool",
+                        "serverTLS": {"bigip":"/Common/bookinfo-example-com"},
+                        "policyWAF": {"use":"productpage_waf_policy"}
+                    },
+                    "productpage_waf_policy": {
+                        "class": "WAF_Policy",
+                        "url": "http://labs.wwtlab.net/lab-guides/f5-openshift-lab-guide/_static/productpage_policy.xml",
+                        "ignoreChanges": false
+                    },
+                    "productpage_pool": {
+                        "class": "Pool",
+                        "monitors": [
+                            "http"
+                        ],
+                        "members": [
+                            {
+                                "servicePort": 9080,
+                                "serverAddresses": []
+                            }
+                        ]
+                    }
+                }
+            }
+        }
+    }

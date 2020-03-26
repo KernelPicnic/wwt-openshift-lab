@@ -1,0 +1,14 @@
+---
+- hosts: localhost
+  connection: local
+  tasks:
+  - name: Create BookInfo DNS Result
+    nios_host_record:
+      name: bookinfo.example.com
+      ipv4:
+      - address: 192.168.2.181
+      state: present
+      provider:
+        host: infoblox.example.com
+        username: admin
+        password: WWTwwt1!
