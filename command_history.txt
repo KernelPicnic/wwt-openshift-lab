@@ -1,0 +1,39 @@
+  426  sh -c "$(curl -fsSL https://raw.githubusercontent.com/Linuxbrew/install/master/install.sh)"
+  427  eval $(/home/linuxbrew/.linuxbrew/bin/brew shellenv)
+  428  brew install mkcert
+  429  mkcert -install
+  430  sudo pip install f5-sdk
+  449  oc login -u student
+  450  cd /home/student
+  452  wget https://labs.wwtlab.net/lab-guides/f5-openshift-lab-guide/_static/bookinfo.zip
+  453  unzip bookinfo.zip 
+  454  oc apply -f bookinfo
+  455  oc get services -o wide
+  457  wget https://labs.wwtlab.net/lab-guides/f5-openshift-lab-guide/_static/openshift-cis-playbook.zip
+  458  unzip openshift-cis-playbook.zip
+  459  oc apply -f /home/student/bookinfo/virtualserver.yaml -n student
+  460  oc login -u student
+  461  oc apply -f /home/student/bookinfo/virtualserver.yaml -n student
+  462  ansible-playbook /home/student/bookinfo/virtualserver.yaml 
+  463  ansible-playbook /home/student/bookinfo/dns.yaml 
+  464  nslookup bookinfo.example.com
+  465  eval $(/home/linuxbrew/.linuxbrew/bin/brew shellenv)
+  466  mkcert bookinfo.example.com
+  467  mkdir /home/student/bookinfo/certs && cp ./bookinfo.example.com* /home/student/bookinfo/certs/
+  468  ansible-playbook /home/student/bookinfo/client-profile.yaml
+  469  oc apply -f /home/student/bookinfo/virtualserver.yaml -n student
+  470  oc delete -f /home/student/bookinfo/virtualserver.yaml -n student
+  473  ls bigip-ctlr/
+  474  vi bigip-ctlr/bigip-ctlr-deployment.yaml 
+  480  oc create -f /home/student/bookinfo/virtualserver.yaml -n student
+  481  mkdir /home/student/telemetry && code /home/student/telemetry
+  482  ansible-playbook /home/student/telemetry/install-telemetry.yaml
+  483  ansible-playbook /home/student/telemetry/configure-telemetry.yaml
+  500  git init
+  502  git add *
+  506  git status
+  507  git commit -m "Intial Commit" 
+  508  git log
+  509  git remote add  https://github.com/KernelPicnic/wwt-openshift-lab.git
+  510  git remote add origin  https://github.com/KernelPicnic/wwt-openshift-lab.git
+  511  git push -u origin master
