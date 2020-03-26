@@ -1,0 +1,5 @@
+[big_ips]
+bigip-a.example.com
+
+[openshift_nodes]
+ocp-node1.example.com oc_port=8443
