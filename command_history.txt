@@ -3,6 +3,19 @@
   428  brew install mkcert
   429  mkcert -install
   430  sudo pip install f5-sdk
+
+CIS INstall
+449  oc login --insecure-skip-tls-verify
+  450  oc create secret generic bigip-login --namespace kube-system --from-literal=username=admin --from-literal=password=admin
+  451  mkdir /home/student/bigip-ctlr; code /home/student/bigip-ctlr
+  452  oc apply -f /home/student/bigip-ctlr/ -n kube-system
+  453  oc apply -f /home/student/bigip-ctlr/bigip-ctlr-hostsubnet.yaml
+  454  oc apply -f /home/student/bigip-ctlr/bigip-ctlr-deployment.yaml -n kube-system
+  455  oc get pods
+  456  oc get pods -n kube-system
+
+App Deploy
+
   449  oc login -u student
   450  cd /home/student
   452  wget https://labs.wwtlab.net/lab-guides/f5-openshift-lab-guide/_static/bookinfo.zip
